@@ -29,10 +29,11 @@ namespace Trash_Collector_Application.Controllers
             //find if employee exists
             if (_context.Employees.Where(e => e.IdentityUserId == userId).Any())
             {
-                var employee = _context.Employees.Where(e => e.IdentityUserId == userId).FirstOrDefault();            
+                var employee = _context.Employees.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+                EmployeeViewModel employeeViewModel = new EmployeeViewModel();
                 //get customer list based on employee
                 //employee specific view to go here
-                return View(employee); // here);
+                return View(employeeViewModel); // here);
             }
             //otherwise have them create an account
             else
@@ -85,15 +86,13 @@ namespace Trash_Collector_Application.Controllers
                     ZipCode = employee.ZipCode,
                     IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)
             };
-                // employee.IdentityUserId = userId;
                 _context.Add(employeeToBeCreated);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                var existingEmployee = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                return View(existingEmployee);
+                return View();
             }
         }
 

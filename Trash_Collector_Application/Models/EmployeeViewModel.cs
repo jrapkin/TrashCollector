@@ -7,5 +7,7 @@ namespace Trash_Collector_Application.Models
 {
 	public class EmployeeViewModel
 	{
+		public Employee Employee { get; set; }
+		public List <Customer> Customers { get; set; }
 	}
 }
