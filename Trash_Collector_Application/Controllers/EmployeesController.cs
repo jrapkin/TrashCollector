@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,8 @@ namespace Trash_Collector_Application.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var myEmployeeProfile = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             var applicationDbContext = _context.Employees.Include(e => e.IdentityUser);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -67,7 +70,7 @@ namespace Trash_Collector_Application.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdtentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdtentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(employee);
         }
 
@@ -84,7 +87,7 @@ namespace Trash_Collector_Application.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdtentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdtentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(employee);
         }
 
@@ -120,7 +123,7 @@ namespace Trash_Collector_Application.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdtentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdtentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(employee);
         }
 
