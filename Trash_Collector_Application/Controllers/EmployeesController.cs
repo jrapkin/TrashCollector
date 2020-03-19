@@ -11,7 +11,7 @@ using Trash_Collector_Application.Models;
 
 namespace Trash_Collector_Application.Controllers
 {
-    [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Employee")]
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;
