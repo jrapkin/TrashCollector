@@ -17,5 +17,7 @@ namespace Trash_Collector_Application.Models
 		[ForeignKey("IdentityUser")]
 		public string IdtentityUserId { get; set; }
 		public IdentityUser IdentityUser { get; set; }
+
+		//TODO add zip code
 	}
 }
