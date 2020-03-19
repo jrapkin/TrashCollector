@@ -26,9 +26,21 @@ namespace Trash_Collector_Application.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var myEmployeeProfile = _context.Employees.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            var applicationDbContext = _context.Employees.Include(e => e.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            //find if employee exists
+            if (_context.Employees.Where(e => e.IdentityUserId == userId).Any())
+            {
+                var employee = _context.Employees.Where(e => e.IdentityUserId == userId).FirstOrDefault();            
+                //get customer list based on employee
+                //employee specific view to go here
+                return View(employee); // here);
+            }
+            //otherwise have them create an account
+            else
+            {
+                return RedirectToAction("Create");
+            }
+
+
         }
 
         // GET: Employees/Details/5
@@ -62,16 +74,27 @@ namespace Trash_Collector_Application.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,IdtentityUserId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName, ZipCode, IdtentityUserId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                Employee employeeToBeCreated = new Employee()
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    ZipCode = employee.ZipCode,
+                    IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)
+            };
+                // employee.IdentityUserId = userId;
+                _context.Add(employeeToBeCreated);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
-            return View(employee);
+            else
+            {
+                var existingEmployee = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return View(existingEmployee);
+            }
         }
 
         // GET: Employees/Edit/5
