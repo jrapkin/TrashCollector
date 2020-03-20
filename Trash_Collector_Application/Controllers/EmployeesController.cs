@@ -33,7 +33,7 @@ namespace Trash_Collector_Application.Controllers
                 EmployeeViewModel employeeViewModel = new EmployeeViewModel();
                 //get customer list based on employee
                 //employee specific view to go here
-                return View(employeeViewModel); // here);
+                return View(); // here);
             }
             //otherwise have them create an account
             else
@@ -75,7 +75,7 @@ namespace Trash_Collector_Application.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName, ZipCode, IdtentityUserId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName, ZipCode, IdentityUserId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Trash_Collector_Application.Controllers
                     LastName = employee.LastName,
                     ZipCode = employee.ZipCode,
                     IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)
-            };
+                };
                 _context.Add(employeeToBeCreated);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
