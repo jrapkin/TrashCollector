@@ -43,7 +43,6 @@ namespace Trash_Collector_Application.Controllers
 		}
 		public IActionResult Create()
 		{
-			ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
 			return View();
 		}
 		[HttpPost]
@@ -85,6 +84,21 @@ namespace Trash_Collector_Application.Controllers
 				//if we got this far something went wrong
 				return View();
 			}
+		}
+		//TODO Build out createaccount post method
+		public IActionResult CreateAccount()
+		{
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult CreateAccount(Account account, Service service)
+		{
+			if (ModelState.IsValid)
+				try
+				{
+
+				}
 		}
 	}
 }
