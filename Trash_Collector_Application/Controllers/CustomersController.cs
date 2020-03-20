@@ -20,44 +20,68 @@ namespace Trash_Collector_Application.Controllers
 
 		//GET: Customers
 
-		//public async Task<IActionResult> Index()
-		//{
-		//	var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-		//	//find if customer exists
-		//	if (_context.Customers.Where(c => c.IdentityUserId == userId).Any())
-		//	{
-		//		//add customer view
-		//		CustomerViewModel customerViewModel = new CustomerViewModel();
-		//		var currentUser = _context.Customers.Find(userId);
+		public IActionResult Index()
+		{
+			var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			//find if customer exists
+			if (_context.Customers.Where(c => c.IdentityUserId == userId).Any())
+			{
+				//add customer view
+				CustomerViewModel customerViewModel = new CustomerViewModel();
+				var currentUser = _context.Customers.Find(userId);
 
-		//		return View(customerViewModel);
-		//	}
-		//	else
-		//	{
-		//		return RedirectToAction("Create");
-		//	}
-		
-		//}
-		//public IActionResult Create()
-		//{
-		//	ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-		//	return View();
-		//}
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public async Task<IActionResult> Create([Bind("Id, FirstName, LastName, Address, IdentityUserId")] Customer customer)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
+				return View(customerViewModel);
+			}
+			else
+			{
+				return RedirectToAction("Create");
+			}
 
-		//		Customer customerToBeCreated = new Customer()
-		//		{
-		//			FirstName = customer.FirstName,
-		//			LastName = customer.LastName,
-		//			IdentityUserId = customer.IdentityUserId
-
-		//		}
-		//	}
-		//}
+		}
+		public IActionResult Create()
+		{
+			ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Create([Bind("Id, FirstName, LastName, Address, IdentityUserId")] Customer customer, Address address)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					Address newAddress = new Address()
+					{
+						Id = address.Id,
+						StreetAddress = address.StreetAddress,
+						City = address.City,
+						State = address.State,
+						ZipCode = address.ZipCode
+					};
+					_context.Addresses.Add(newAddress);
+					_context.SaveChanges();
+					Customer customerToBeCreated = new Customer()
+					{
+						FirstName = customer.FirstName,
+						LastName = customer.LastName,
+						IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier),
+						AddressId = newAddress.Id
+					};
+					_context.Customers.Add(customerToBeCreated);
+					_context.SaveChanges();
+					return RedirectToAction(nameof(Index));
+				}
+				catch
+				{
+					return View();
+				}
+			}
+			else
+			{
+				//if we got this far something went wrong
+				return View();
+			}
+		}
 	}
 }
