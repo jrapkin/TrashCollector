@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,9 @@ namespace Trash_Collector_Application.Controllers
 			{
 				//add customer view
 				CustomerViewModel customerViewModel = new CustomerViewModel();
-				var currentUser = _context.Customers.Find(userId);
+				var currentUser = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+				customerViewModel.Customer = currentUser;
+				customerViewModel.Address = currentUser.Address;
 
 				return View(customerViewModel);
 			}

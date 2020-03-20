@@ -1,8 +1,15 @@
-﻿
+﻿@model Trash_Collector_Application.Models.CustomerViewModel
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Dashboard</h1>
+<hr />
+<h4> Hello @Model.Customer.FirstName</h4>
+<h4 style="font-size:120%"> How can we help you today?</h4>
 
+
+
+<div class="col-1 text-white"><a class="btn-primary active btn-sm btn-block" asp-action= "Edit">Edit</a> </div>

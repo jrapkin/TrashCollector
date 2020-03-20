@@ -9,8 +9,7 @@ namespace Trash_Collector_Application.Models
 	public class CustomerViewModel
 	{
 		public Customer Customer { get; set; }
-		public IdentityUser IdentityUser { get; set; }
 		public Address Address { get; set; }
-		public Service Service { get; set; }
+		//public Service Service { get; set; }
 	}
 }

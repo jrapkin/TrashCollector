@@ -79,19 +79,27 @@ namespace Trash_Collector_Application.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee employeeToBeCreated = new Employee()
+                try
                 {
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    ZipCode = employee.ZipCode,
-                    IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                };
-                _context.Add(employeeToBeCreated);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    Employee employeeToBeCreated = new Employee()
+                    {
+                        FirstName = employee.FirstName,
+                        LastName = employee.LastName,
+                        ZipCode = employee.ZipCode,
+                        IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                    };
+                    _context.Add(employeeToBeCreated);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
             else
             {
+                //If we got this far something went wrong
                 return View();
             }
         }
