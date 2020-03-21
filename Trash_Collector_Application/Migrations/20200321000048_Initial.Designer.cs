@@ -10,7 +10,7 @@ using Trash_Collector_Application.Data;
 namespace Trash_Collector_Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200320144204_Initial")]
+    [Migration("20200321000048_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,15 +50,15 @@ namespace Trash_Collector_Application.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "28855c6a-7f8b-4cca-9d71-a1b64c4001d3",
-                            ConcurrencyStamp = "314ea005-6103-457e-876b-791b5e96046f",
+                            Id = "b3d5bfe6-c08a-4807-a361-5f1436498dd3",
+                            ConcurrencyStamp = "468ad434-3861-468f-9518-b079aede2623",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "afb9a529-29ec-4877-8f9b-54a6661023dd",
-                            ConcurrencyStamp = "42e6cf0d-d298-4251-86a4-41a49690bd12",
+                            Id = "5cc39695-7f62-4163-89b7-19f1789a2628",
+                            ConcurrencyStamp = "9702b796-b980-47b1-8242-3609375ed970",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -233,6 +233,26 @@ namespace Trash_Collector_Application.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Trash_Collector_Application.Models.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("AccountBalance")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("Trash_Collector_Application.Models.Address", b =>
                 {
                     b.Property<int>("Id")
@@ -267,6 +287,9 @@ namespace Trash_Collector_Application.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
+
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
@@ -280,6 +303,8 @@ namespace Trash_Collector_Application.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("AddressId");
 
@@ -316,12 +341,30 @@ namespace Trash_Collector_Application.Migrations
 
             modelBuilder.Entity("Trash_Collector_Application.Models.Service", b =>
                 {
-                    b.Property<int>("ServiceId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasKey("ServiceId");
+                    b.Property<int>("DayOfService")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndServiceHold")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsOnHold")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("NextServiceDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("OneTimeService")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StartServiceHold")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Services");
                 });
@@ -377,8 +420,21 @@ namespace Trash_Collector_Application.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Trash_Collector_Application.Models.Account", b =>
+                {
+                    b.HasOne("Trash_Collector_Application.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Trash_Collector_Application.Models.Customer", b =>
                 {
+                    b.HasOne("Trash_Collector_Application.Models.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
+
                     b.HasOne("Trash_Collector_Application.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")

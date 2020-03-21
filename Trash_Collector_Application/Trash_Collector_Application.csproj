@@ -5,6 +5,21 @@
     <UserSecretsId>aspnet-Trash_Collector_Application-E77C4488-992E-4E08-A519-709C6B82F2F4</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200320190103_AccountTable.cs" />
+    <Compile Remove="Migrations\20200320190103_AccountTable.Designer.cs" />
+    <Compile Remove="Migrations\20200320192603_AddAccountForeignKeyToCustomer.cs" />
+    <Compile Remove="Migrations\20200320192603_AddAccountForeignKeyToCustomer.Designer.cs" />
+    <Compile Remove="Migrations\20200320193448_AddAcounForinKyToCustomer.cs" />
+    <Compile Remove="Migrations\20200320193448_AddAcounForinKyToCustomer.Designer.cs" />
+    <Compile Remove="Migrations\20200320215648_inia.cs" />
+    <Compile Remove="Migrations\20200320215648_inia.Designer.cs" />
+    <Compile Remove="Migrations\20200320215731_Initial.cs" />
+    <Compile Remove="Migrations\20200320215731_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200320222234_remov-migration.cs" />
+    <Compile Remove="Migrations\20200320222234_remov-migration.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />

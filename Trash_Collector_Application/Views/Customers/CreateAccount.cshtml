@@ -1,0 +1,47 @@
+﻿@model Trash_Collector_Application.Models.Account
+
+@{
+    ViewData["Title"] = "CreateAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CreateAccount</h1>
+
+<h4>Account</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateAccount">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Service.DayOfService" class="control-label"></label>
+                <input asp-for="Service.DayOfService" class="form-control" />
+                <span asp-validation-for="Service.DayOfService" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Service.OneTimeService" class=" control-label"></label>
+                <input asp-for="Service.OneTimeService" class="form-control" />
+                <span asp-validation-for="Service.OneTimeService" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Service.StartServiceHold" class=" control-label"></label>
+                <input asp-for="Service.StartServiceHold" class="form-control" />
+                <span asp-validation-for="Service.StartServiceHold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Service.EndServiceHold" class=" control-label"></label>
+                <input asp-for="Service.EndServiceHold" class="form-control" />
+                <span asp-validation-for="Service.EndServiceHold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Dashboard</a>
+</div>
+

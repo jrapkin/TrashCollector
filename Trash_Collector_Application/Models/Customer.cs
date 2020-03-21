@@ -22,6 +22,9 @@ namespace Trash_Collector_Application.Models
 		[ForeignKey("Address")]
 		public int AddressId { get; set; }
 		public Address Address { get; set; }
+		[ForeignKey("Account")]
+		public int? AccountId { get; set; }
+		public Account Account { get; set; }
 
 	}
 }

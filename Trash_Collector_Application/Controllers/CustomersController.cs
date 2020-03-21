@@ -32,14 +32,12 @@ namespace Trash_Collector_Application.Controllers
 				var currentUser = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 				customerViewModel.Customer = currentUser;
 				customerViewModel.Address = currentUser.Address;
-
 				return View(customerViewModel);
 			}
 			else
 			{
 				return RedirectToAction("Create");
 			}
-
 		}
 		public IActionResult Create()
 		{
@@ -47,7 +45,7 @@ namespace Trash_Collector_Application.Controllers
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Create([Bind("Id, FirstName, LastName, Address, IdentityUserId")] Customer customer, Address address)
+		public IActionResult Create([Bind("Id, FirstName, LastName, Address, IdentityUserId")] Customer customer, Account account)
 		{
 			if (ModelState.IsValid)
 			{
@@ -55,11 +53,10 @@ namespace Trash_Collector_Application.Controllers
 				{
 					Address newAddress = new Address()
 					{
-						Id = address.Id,
-						StreetAddress = address.StreetAddress,
-						City = address.City,
-						State = address.State,
-						ZipCode = address.ZipCode
+						StreetAddress = customer.Address.StreetAddress,
+						City = customer.Address.City,
+						State = customer.Address.State,
+						ZipCode = customer.Address.ZipCode
 					};
 					_context.Addresses.Add(newAddress);
 					_context.SaveChanges();
@@ -95,10 +92,43 @@ namespace Trash_Collector_Application.Controllers
 		public IActionResult CreateAccount(Account account, Service service)
 		{
 			if (ModelState.IsValid)
+			{
 				try
 				{
-
+					Service newService = new Service()
+					{
+						DayOfService = service.DayOfService,
+						NextServiceDay = service.NextServiceDay.AddDays(7),
+						IsOnHold = service.IsOnHold,
+						OneTimeService = service.OneTimeService,
+						StartServiceHold = service.StartServiceHold,
+						EndServiceHold = service.EndServiceHold
+					};
+					_context.Services.Add(newService);
+					_context.SaveChanges();
+					Account newAccount = new Account()
+					{
+						ServiceId = newService.Id,
+						AccountBalance = 0,
+					};
+					_context.Accounts.Add(newAccount);
+					_context.SaveChanges();
+					var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+					var customer = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+					customer.AccountId = newAccount.Id;
+					_context.Customers.Update(customer);
+					_context.SaveChanges();
+					return RedirectToAction(nameof(Index));
 				}
+				catch
+				{
+					return View();
+				}
+			}
+			else
+			{
+				return View();
+			}
 		}
 	}
 }
