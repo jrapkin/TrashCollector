@@ -117,7 +117,6 @@ namespace Trash_Collector_Application.Controllers
 				return View();
 			}
 		}
-		//TO DO: complete method
 		public IActionResult EditService()
 		{
 			var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -130,9 +129,6 @@ namespace Trash_Collector_Application.Controllers
 			{
 				return NotFound(); 
 			}
-			//var service = _context.Accounts.Where(a => a.Id == customer.AccountId)
-			//							     .Include(s => s.Service)
-			//							     .; Include(s => s.Service).Where()
 			return View(customer.Account.Service);
 
 		}
@@ -166,6 +162,27 @@ namespace Trash_Collector_Application.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 			return View();
+		}
+		public IActionResult AccountDetails()
+		{
+			var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (userId == null)
+			{
+				return NotFound();
+			}
+			var customer = _context.Customers.Include(a => a.Address).Include(c => c.Account).ThenInclude(s => s.Service).Where(c => c.IdentityUserId == userId).FirstOrDefault();
+			if (customer == null)
+			{
+				return NotFound();
+			}
+			CustomerViewModel customerViewModel = new CustomerViewModel()
+			{
+				Customer = customer,
+				Address = customer.Address,
+				Account = customer.Account,
+				Service = customer.Account.Service
+			};
+			return View(customerViewModel);
 		}
 	}
 }

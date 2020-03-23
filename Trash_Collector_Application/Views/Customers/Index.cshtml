@@ -5,11 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <h1 class="text-center">Dashboard</h1>
 <hr />
-<h4> Hello @Model.Customer.FirstName</h4>
+<div class="row no-gutters">
+    <div class="text-left">
+        <h4> Hello @Model.Customer.FirstName</h4>
+    </div>
+    <div class="col-3 text-white"> <a class="btn-primary active btn-lg btn-block"> Get Current Balance</a></div>
+</div>
 <h4 style="font-size:120%"> How can we help you today?</h4>
 
+<div class="col-3 text-white"><a class="btn-primary active btn-sm btn-block" asp-action= "CreateAccount">Start Service</a> </div>
 
-
-<div class="col-1 text-white"><a class="btn-primary active btn-sm btn-block" asp-action= "CreateAccount">Start Service</a> </div>
