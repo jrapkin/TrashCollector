@@ -27,11 +27,12 @@ namespace Trash_Collector_Application.Controllers
 			//find if customer exists
 			if (_context.Customers.Where(c => c.IdentityUserId == userId).Any())
 			{
-				//add customer view
 				CustomerViewModel customerViewModel = new CustomerViewModel();
-				var currentUser = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+				var currentUser = _context.Customers.Include(c => c.Address).Include(c => c.Account).ThenInclude(s => s.Service).Where(c => c.IdentityUserId == userId).FirstOrDefault();
 				customerViewModel.Customer = currentUser;
+				customerViewModel.Account = currentUser.Account;
 				customerViewModel.Address = currentUser.Address;
+				customerViewModel.Service = currentUser.Account.Service;
 				return View(customerViewModel);
 			}
 			else
@@ -45,7 +46,7 @@ namespace Trash_Collector_Application.Controllers
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Create([Bind("Id, FirstName, LastName, Address, IdentityUserId")] Customer customer, Account account)
+		public IActionResult Create([Bind("Id, FirstName, LastName, Address, IdentityUserId")] Customer customer)
 		{
 			if (ModelState.IsValid)
 			{
@@ -60,14 +61,9 @@ namespace Trash_Collector_Application.Controllers
 					};
 					_context.Addresses.Add(newAddress);
 					_context.SaveChanges();
-					Customer customerToBeCreated = new Customer()
-					{
-						FirstName = customer.FirstName,
-						LastName = customer.LastName,
-						IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier),
-						AddressId = newAddress.Id
-					};
-					_context.Customers.Add(customerToBeCreated);
+					customer.IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+					customer.AddressId = newAddress.Id;
+					_context.Customers.Add(customer);
 					_context.SaveChanges();
 					return RedirectToAction(nameof(Index));
 				}
@@ -95,27 +91,18 @@ namespace Trash_Collector_Application.Controllers
 			{
 				try
 				{
-					Service newService = new Service()
-					{
-						DayOfService = service.DayOfService,
-						NextServiceDay = service.NextServiceDay.AddDays(7),
-						IsOnHold = service.IsOnHold,
-						OneTimeService = service.OneTimeService,
-						StartServiceHold = service.StartServiceHold,
-						EndServiceHold = service.EndServiceHold
-					};
-					_context.Services.Add(newService);
+					
+					_context.Services.Add(service);
 					_context.SaveChanges();
-					Account newAccount = new Account()
-					{
-						ServiceId = newService.Id,
-						AccountBalance = 0,
-					};
-					_context.Accounts.Add(newAccount);
+
+					account.ServiceId = service.Id;
+					account.AccountBalance ??= 0;
+					_context.Accounts.Add(account);
 					_context.SaveChanges();
+
 					var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 					var customer = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-					customer.AccountId = newAccount.Id;
+					customer.AccountId = account.Id;
 					_context.Customers.Update(customer);
 					_context.SaveChanges();
 					return RedirectToAction(nameof(Index));
@@ -129,6 +116,56 @@ namespace Trash_Collector_Application.Controllers
 			{
 				return View();
 			}
+		}
+		//TO DO: complete method
+		public IActionResult EditService()
+		{
+			var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (userId == null)
+			{
+				return NotFound();
+			}
+			var customer = _context.Customers.Include(c => c.Account).ThenInclude(s => s.Service).Where(c => c.IdentityUserId == userId).FirstOrDefault();
+			if (customer == null)
+			{
+				return NotFound(); 
+			}
+			//var service = _context.Accounts.Where(a => a.Id == customer.AccountId)
+			//							     .Include(s => s.Service)
+			//							     .; Include(s => s.Service).Where()
+			return View(customer.Account.Service);
+
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult EditService([Bind("Id, DayOfService, NextServiceDay, IsOnHold, OneTimeService, StartServiceHold, EndServiceHold")]Service service)
+		{
+			//var serviceToUpdate = _context.Services.Where(s => s.Id == service.Id).FirstOrDefault();//query service table 
+			if (!_context.Services.Where(s => s.Id == service.Id).Any())
+			{
+				return NotFound();
+			}
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					_context.Update(service);
+					_context.SaveChanges();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!_context.Services.Any(s => s.Id == service.Id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			return View();
 		}
 	}
 }

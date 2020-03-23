@@ -1,0 +1,56 @@
+﻿@model Trash_Collector_Application.Models.Service
+
+@{
+    ViewData["Title"] = "Edit Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit Services</h1>
+
+<h4>Service</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditService">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="DayOfService" class="control-label"></label>
+                <input asp-for="DayOfService" class="form-control"></input>
+                <span asp-validation-for="DayOfService" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextServiceDay" class="control-label"></label>
+                <input asp-for="NextServiceDay" class="form-control" />
+                <span asp-validation-for="NextServiceDay" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input type ="hidden" asp-for="IsOnHold" /> 
+            </div>
+            <div class="form-group">
+                <label asp-for="OneTimeService" class="control-label"></label>
+                <input asp-for="OneTimeService" class="form-control" />
+                <span asp-validation-for="OneTimeService" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartServiceHold" class="control-label"></label>
+                <input asp-for="StartServiceHold" class="form-control" />
+                <span asp-validation-for="StartServiceHold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndServiceHold" class="control-label"></label>
+                <input asp-for="EndServiceHold" class="form-control" />
+                <span asp-validation-for="EndServiceHold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

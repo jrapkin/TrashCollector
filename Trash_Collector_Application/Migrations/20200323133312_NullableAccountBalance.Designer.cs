@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trash_Collector_Application.Data;
 
 namespace Trash_Collector_Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200323133312_NullableAccountBalance")]
+    partial class NullableAccountBalance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace Trash_Collector_Application.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b269f42d-9897-44c9-8f35-601b5f2265db",
-                            ConcurrencyStamp = "62052641-c40d-4aba-99a9-034595499731",
+                            Id = "700c7035-de13-452e-bd44-aad28996380f",
+                            ConcurrencyStamp = "af241c01-964b-4085-9a8c-a707db4c08dc",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "9f1c6d31-37f1-48a2-be4f-b4287c83e990",
-                            ConcurrencyStamp = "8abd9b1a-3d0d-4c63-9974-d36ca6673549",
+                            Id = "5996cc99-c5c7-4718-bdd1-5c95657d73c8",
+                            ConcurrencyStamp = "0ed18a69-87f8-421c-86cb-a3ef8b14e706",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -259,6 +261,9 @@ namespace Trash_Collector_Application.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PickupDay")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")

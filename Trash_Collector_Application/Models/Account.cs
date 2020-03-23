@@ -11,11 +11,9 @@ namespace Trash_Collector_Application.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		public double AccountBalance { get; set; }
+		public double? AccountBalance { get; set; }
 		[ForeignKey("Service")]
 		public int ServiceId { get; set; }
 		public Service Service { get; set; }
-
-
 	}
 }
