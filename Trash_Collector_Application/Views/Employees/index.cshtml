@@ -8,11 +8,24 @@
 <h1>Welcome, @Model.Employee.FirstName </h1>
 <hr />
 <h2>Today's Pickups @Model.Employee.ZipCode</h2>
-<h3 input t class="btn btn-outline-primary">-Fitler by day of week Placeholder-</h3>
-<div class="form-group">
-    <label> Filter By Day</label>
-    <select asp-for="Input.Role" class="form-control" asp-items="@Model.Roles"></select>
-    <span asp-validation-for="Input.Role" class="text-danger"></span>
+<div class="row">
+    <form asp-action="Index">
+        <div class="form-group">
+            <label asp-for="DayForFilter" class="control-label">Filter By Day</label>
+            <select asp-for="DayForFilter" value="DayForFilter.DayOfWeek" class="form-control">
+                <option value=@DayOfWeek.Monday>Monday</option>
+                <option value=@DayOfWeek.Tuesday>Tuesday</option>
+                <option value=@DayOfWeek.Wednesday>Wednesday</option>
+                <option value=@DayOfWeek.Thursday>Thursday</option>
+                <option value=@DayOfWeek.Friday>Friday</option>
+                <option value=@DayOfWeek.Saturday>Saturday</option>
+            </select>
+            <span asp-validation-for="DayForFilter" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Filter" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 <table class="table">
     <thead>
@@ -29,9 +42,11 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model.Customers)
-        {
+
+
+    @foreach (var item in Model.Customers)
+    {
+        <tbody>
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
@@ -46,11 +61,21 @@
                     @Html.DisplayFor(modelItem => item.Account.Service.DayOfService)
                 </td>
                 <td>
-                    <a asp-action="ConfirmCompletedService" asp-route-AccountId="@item.AccountId">Confirm Service Pickup</a> |
-                    <a asp-action="CustomerDetails" asp-route-id="@item.Id">Customer Details</a> |
-
+                    @if (item.Account.Service.ServiceIsCompleted)
+                    {
+                        <p class="text-body">Service Complete</p>
+                    }
+                    
+                    @if (item.Account.Service.ServiceIsCompleted == false)
+                    {
+                        <a asp-action="ConfirmCompletedService" asp-route-AccountId="@item.AccountId">Confirm Service Pickup</a>
+                    }
+                    |
+                    <a asp-action="CustomerDetails" asp-route-id= "@item.Id">Customer Details</a>
                 </td>
             </tr>
-        }
-    </tbody>
+        </tbody>
+    }
+      
+
 </table>

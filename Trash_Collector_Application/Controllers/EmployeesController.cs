@@ -29,17 +29,39 @@ namespace Trash_Collector_Application.Controllers
 
             if (_context.Employees.Where(e => e.IdentityUserId == userId).Any())
             {
+                EmployeeViewModel employeeView = new EmployeeViewModel();
+                var currentEmployee = _context.Employees.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+                employeeView.Employee = currentEmployee;
+                var customers = GetAllCustomers();
+                customers = GetCustomersByZip(customers, currentEmployee);
+                employeeView.Customers = GetCustomersByDay(customers, employeeView);
+                return View(employeeView);
+            }
+            else
+            {
+                return RedirectToAction("Create");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(EmployeeViewModel employeeViewFromForm)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (_context.Employees.Where(e => e.IdentityUserId == userId).Any())
+            {
                 var employee = _context.Employees.Where(e => e.IdentityUserId == userId).FirstOrDefault();
                 var customers = GetAllCustomers();
-                customers = customers.Where(c => c.Address.ZipCode == employee.ZipCode).ToList();
+                customers = GetCustomersByZip(customers, employee);
+                customers = GetCustomersByDay(customers, employeeViewFromForm);
                 EmployeeViewModel employeeView = new EmployeeViewModel()
                 {
                     Employee = employee,
-                    Customers = GetCustomersByDay(customers).FindAll(ca => ca.Account.Service.IsOnHold ==false)
+                    Customers = customers,
+                    DayForFilter = employeeViewFromForm.DayForFilter
                 };
                 return View(employeeView);
             }
-
             else
             {
                 return RedirectToAction("Create");
@@ -56,6 +78,7 @@ namespace Trash_Collector_Application.Controllers
             {
                 customerAccount.Service.OneTimeService = null;
             }
+            customerAccount.Service.ServiceIsCompleted = true;
             customerAccount.AccountBalance += 50;
             _context.Accounts.Update(customerAccount);
             _context.SaveChanges();
@@ -190,10 +213,21 @@ namespace Trash_Collector_Application.Controllers
             var customers = _context.Customers.Include(c => c.Address).Include(c => c.Account).ThenInclude(s => s.Service).ToList();
             return customers;
         }
-        //TODO- Filter by day
-        private List<Customer> GetCustomersByDay(List<Customer> customers)
+        private List<Customer> GetCustomersByZip(List<Customer> customers, Employee employee)
         {
-            customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(DateTime.Today.DayOfWeek) || sd.Account.Service.OneTimeService.Equals(DateTime.Today)).ToList();
+            customers = customers.Where(c => c.Address.ZipCode == employee.ZipCode).ToList();
+            return customers;
+        }
+        private List<Customer> GetCustomersByDay(List<Customer> customers, EmployeeViewModel employeeView)
+        {
+            if (employeeView.DayForFilter == null)
+            {
+                customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(DateTime.Today.DayOfWeek) || sd.Account.Service.OneTimeService.Equals(DateTime.Today)).ToList();
+            }
+            if(employeeView.DayForFilter.HasValue)
+            {
+                customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(employeeView.DayForFilter) || sd.Account.Service.OneTimeService.Equals(employeeView.DayForFilter)).ToList();
+            }
             return customers;
         }
     }
