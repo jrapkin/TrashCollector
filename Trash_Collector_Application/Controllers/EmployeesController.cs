@@ -37,7 +37,6 @@ namespace Trash_Collector_Application.Controllers
                     Employee = employee,
                     Customers = GetCustomersByDay(customers).FindAll(ca => ca.Account.Service.IsOnHold ==false)
                 };
-
                 return View(employeeView);
             }
 
@@ -46,24 +45,21 @@ namespace Trash_Collector_Application.Controllers
                 return RedirectToAction("Create");
             }
         }
-
-        // GET: Employees/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult ConfirmCompletedService(int accountId)
         {
-            if (id == null)
+            var customerAccount = _context.Accounts.Include(a => a.Service).Where(a => a.Id == accountId).FirstOrDefault();
+            if (customerAccount.Service.NextServiceDay.Date.Equals(DateTime.Today))
             {
-                return NotFound();
+                customerAccount.Service.NextServiceDay = customerAccount.Service.NextServiceDay.AddDays(7);
             }
-
-            var employee = await _context.Employees
-                .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+            if (customerAccount.Service.OneTimeService.Value.Date.Equals(DateTime.Today))
             {
-                return NotFound();
+                customerAccount.Service.OneTimeService = null;
             }
-
-            return View(employee);
+            customerAccount.AccountBalance += 50;
+            _context.Accounts.Update(customerAccount);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Employees/Create
@@ -73,9 +69,6 @@ namespace Trash_Collector_Application.Controllers
             return View();
         }
 
-        // POST: Employees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName, ZipCode, IdentityUserId")] Employee employee)
@@ -124,9 +117,6 @@ namespace Trash_Collector_Application.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,IdtentityUserId")] Employee employee)

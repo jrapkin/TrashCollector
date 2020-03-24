@@ -8,8 +8,12 @@
 <h1>Welcome, @Model.Employee.FirstName </h1>
 <hr />
 <h2>Today's Pickups @Model.Employee.ZipCode</h2>
-<h3 class="btn btn-outline-primary">-Fitler by day of week Placeholder-</h3>
-
+<h3 input t class="btn btn-outline-primary">-Fitler by day of week Placeholder-</h3>
+<div class="form-group">
+    <label> Filter By Day</label>
+    <select asp-for="Input.Role" class="form-control" asp-items="@Model.Roles"></select>
+    <span asp-validation-for="Input.Role" class="text-danger"></span>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -26,26 +30,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Customers) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.StreetAddress),
-                @Html.DisplayFor(modelItem => item.Address.City),
-                @Html.DisplayFor(modelItem => item.Address.ZipCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Account.Service.DayOfService)
-            </td>
-            <td>
-                <a asp-action="ConfirmService" asp-route-id="@item.Id">Confirm Completed Service</a> |
-                <a asp-action="CustomerDetails" asp-route-id="@item.Id">Customer Details</a> |
+        @foreach (var item in Model.Customers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address.StreetAddress),
+                    @Html.DisplayFor(modelItem => item.Address.City),
+                    @Html.DisplayFor(modelItem => item.Address.ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.Service.DayOfService)
+                </td>
+                <td>
+                    <a asp-action="ConfirmCompletedService" asp-route-AccountId="@item.AccountId">Confirm Service Pickup</a> |
+                    <a asp-action="CustomerDetails" asp-route-id="@item.Id">Customer Details</a> |
 
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
