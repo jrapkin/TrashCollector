@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Trash_Collector_Application.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initia : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,8 +16,7 @@ namespace Trash_Collector_Application.Migrations
                     StreetAddress = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    ZipCode = table.Column<string>(nullable: true),
-                    PickupDay = table.Column<string>(nullable: true)
+                    ZipCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -195,7 +194,7 @@ namespace Trash_Collector_Application.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    ZipCode = table.Column<int>(nullable: false),
+                    ZipCode = table.Column<string>(nullable: true),
                     IdentityUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -215,7 +214,7 @@ namespace Trash_Collector_Application.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountBalance = table.Column<double>(nullable: false),
+                    AccountBalance = table.Column<double>(nullable: true),
                     ServiceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -267,12 +266,12 @@ namespace Trash_Collector_Application.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b3d5bfe6-c08a-4807-a361-5f1436498dd3", "468ad434-3861-468f-9518-b079aede2623", "Customer", "CUSTOMER" });
+                values: new object[] { "7e1408c6-34b4-488a-aa18-2ad15e94e6f5", "f371cc0b-6802-4fb7-b96e-6d3ab7e53a04", "Customer", "CUSTOMER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "5cc39695-7f62-4163-89b7-19f1789a2628", "9702b796-b980-47b1-8242-3609375ed970", "Employee", "EMPLOYEE" });
+                values: new object[] { "dd222b73-33df-41a6-b1a2-02cfb01ca0c6", "f787429d-791d-42a1-a7e8-321abf0c4923", "Employee", "EMPLOYEE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ServiceId",

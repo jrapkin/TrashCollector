@@ -1,4 +1,4 @@
-﻿@model Trash_Collector_Application.Models.CustomerViewModel
+﻿@model Trash_Collector_Application.Models.Customer
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -7,14 +7,10 @@
 
 
 <h1 class="text-center">Dashboard</h1>
+<h2>Hello, @Model.FirstName </h2>
 <hr />
-<div class="row no-gutters">
-    <div class="text-left">
-        <h4> Hello @Model.Customer.FirstName</h4>
-    </div>
-    <div class="col-3 text-white"> <a class="btn-primary active btn-lg btn-block"> Get Current Balance</a></div>
-</div>
+<h3>Current Balance:@Model.Account.AccountBalance</h3>
 <h4 style="font-size:120%"> How can we help you today?</h4>
 
-<div class="col-3 text-white"><a class="btn-primary active btn-sm btn-block" asp-action= "CreateAccount">Start Service</a> </div>
+<div class="col-3 text-white"><a class="btn-primary active btn-sm btn-block" asp-action="CreateAccount">Start Service</a> </div>
 

@@ -26,22 +26,25 @@ namespace Trash_Collector_Application.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //find if employee exists
+
             if (_context.Employees.Where(e => e.IdentityUserId == userId).Any())
             {
                 var employee = _context.Employees.Where(e => e.IdentityUserId == userId).FirstOrDefault();
-                EmployeeViewModel employeeViewModel = new EmployeeViewModel();
-                //get customer list based on employee
-                //employee specific view to go here
-                return View(); // here);
+                var customers = GetAllCustomers();
+                customers = customers.Where(c => c.Address.ZipCode == employee.ZipCode).ToList();
+                EmployeeViewModel employeeView = new EmployeeViewModel()
+                {
+                    Employee = employee,
+                    Customers = GetCustomersByDay(customers).FindAll(ca => ca.Account.Service.IsOnHold ==false)
+                };
+
+                return View(employeeView);
             }
-            //otherwise have them create an account
+
             else
             {
                 return RedirectToAction("Create");
             }
-
-
         }
 
         // GET: Employees/Details/5
@@ -190,6 +193,18 @@ namespace Trash_Collector_Application.Controllers
         private bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.Id == id);
+        }
+
+        private List<Customer> GetAllCustomers()
+        {
+            var customers = _context.Customers.Include(c => c.Address).Include(c => c.Account).ThenInclude(s => s.Service).ToList();
+            return customers;
+        }
+        //TODO- Filter by day
+        private List<Customer> GetCustomersByDay(List<Customer> customers)
+        {
+            customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(DateTime.Today.DayOfWeek) || sd.Account.Service.OneTimeService.Equals(DateTime.Today)).ToList();
+            return customers;
         }
     }
 }

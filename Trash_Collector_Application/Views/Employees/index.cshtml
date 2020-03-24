@@ -1,50 +1,51 @@
-﻿@model Trash_Collector_Application.Models.Employee
+﻿@model Trash_Collector_Application.Models.EmployeeViewModel
 
 @{
     ViewData["Title"] = "Employee Homepage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Welcome, placeholder for name </h1>
+<h1>Welcome, @Model.Employee.FirstName </h1>
 <hr />
-<h4>Today's Pickups (placeholder for zip code)</h4>
-<h4 class="btn btn-outline-light">-Fitler by day of week Placeholder-</h4>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h2>Today's Pickups @Model.Employee.ZipCode</h2>
+<h3 class="btn btn-outline-primary">-Fitler by day of week Placeholder-</h3>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                Customer Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                Customer Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Service Day
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@*@foreach (var item in Model) {
+@foreach (var item in Model.Customers) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.Address.StreetAddress),
+                @Html.DisplayFor(modelItem => item.Address.City),
+                @Html.DisplayFor(modelItem => item.Address.ZipCode)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Account.Service.DayOfService)
+            </td>
+            <td>
+                <a asp-action="ConfirmService" asp-route-id="@item.Id">Confirm Completed Service</a> |
+                <a asp-action="CustomerDetails" asp-route-id="@item.Id">Customer Details</a> |
+
             </td>
         </tr>
-}*@
+}
     </tbody>
 </table>

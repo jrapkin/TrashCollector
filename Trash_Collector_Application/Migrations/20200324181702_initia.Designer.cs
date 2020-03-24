@@ -10,8 +10,8 @@ using Trash_Collector_Application.Data;
 namespace Trash_Collector_Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200323163914_RemovePickupDayFromAddress")]
-    partial class RemovePickupDayFromAddress
+    [Migration("20200324181702_initia")]
+    partial class initia
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,15 +50,15 @@ namespace Trash_Collector_Application.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b269f42d-9897-44c9-8f35-601b5f2265db",
-                            ConcurrencyStamp = "62052641-c40d-4aba-99a9-034595499731",
+                            Id = "7e1408c6-34b4-488a-aa18-2ad15e94e6f5",
+                            ConcurrencyStamp = "f371cc0b-6802-4fb7-b96e-6d3ab7e53a04",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "9f1c6d31-37f1-48a2-be4f-b4287c83e990",
-                            ConcurrencyStamp = "8abd9b1a-3d0d-4c63-9974-d36ca6673549",
+                            Id = "dd222b73-33df-41a6-b1a2-02cfb01ca0c6",
+                            ConcurrencyStamp = "f787429d-791d-42a1-a7e8-321abf0c4923",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -326,8 +326,8 @@ namespace Trash_Collector_Application.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ZipCode")
-                        .HasColumnType("int");
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

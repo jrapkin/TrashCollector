@@ -27,13 +27,8 @@ namespace Trash_Collector_Application.Controllers
 			//find if customer exists
 			if (_context.Customers.Where(c => c.IdentityUserId == userId).Any())
 			{
-				CustomerViewModel customerViewModel = new CustomerViewModel();
 				var currentUser = _context.Customers.Include(c => c.Address).Include(c => c.Account).ThenInclude(s => s.Service).Where(c => c.IdentityUserId == userId).FirstOrDefault();
-				customerViewModel.Customer = currentUser;
-				customerViewModel.Account = currentUser.Account;
-				customerViewModel.Address = currentUser.Address;
-				customerViewModel.Service = currentUser.Account.Service;
-				return View(customerViewModel);
+				return View(currentUser);
 			}
 			else
 			{
