@@ -42,8 +42,43 @@
         </dd>
     </dl>
 </div>
+
+<script>
+    function initialize()
+    {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: { lat: 43.0389, lng: -87.9065 }
+        });
+
+        var geocoder = new google.maps.Geocoder();
+        geocodeAddress(geocoder, map);
+    }
+    function geocodeAddress(geocoder, resultsMap) {
+        var address = "@Model.Address.StreetAddress + @Model.Address.City + @Model.Address.State + @Model.Address.ZipCode";
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+                resultsMap.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: resultsMap,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhZVCq4c7CsvvJ4G5wpcowMVe4gS0_ISI&callback=initialize">
+</script>
+
+<body onload="initialize()">
+    <div class="col-sm-8" id="map" style="height:400px;"></div>
+</body>
+<br />
 <div>
     <a asp-action="Index">Dashboard</a>
 </div>
-
 
