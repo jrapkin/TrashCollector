@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Trash_Collector_Application.Models;
@@ -12,21 +14,19 @@ namespace Trash_Collector_Application.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger)
 		{
 			_logger = logger;
 		}
-
 		public IActionResult Index()
 		{
 			return View();
 		}
-
 		public IActionResult Privacy()
 		{
 			return View();
 		}
-
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

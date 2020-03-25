@@ -148,7 +148,7 @@ namespace Trash_Collector_Application.Controllers
             {
                 customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(DateTime.Today.DayOfWeek) || sd.Account.Service.OneTimeService.Equals(DateTime.Today)).ToList();
             }
-            if(employeeView.DayForFilter.HasValue)
+            if (employeeView.DayForFilter.HasValue)
             {
                 customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(employeeView.DayForFilter) || sd.Account.Service.OneTimeService.Equals(employeeView.DayForFilter)).ToList();
             }

@@ -175,14 +175,8 @@ namespace Trash_Collector_Application.Controllers
 			{
 				return NotFound();
 			}
-			CustomerViewModel customerViewModel = new CustomerViewModel()
-			{
-				Customer = customer,
-				Address = customer.Address,
-				Account = customer.Account,
-				Service = customer.Account.Service
-			};
-			return View(customerViewModel);
+
+			return View(customer);
 		}
 	}
 }

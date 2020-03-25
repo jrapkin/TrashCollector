@@ -1,4 +1,4 @@
-﻿@model Trash_Collector_Application.Models.CustomerViewModel
+﻿@model Trash_Collector_Application.Models.Customer
 
 @{
     ViewData["Title"] = "AccountDetails";
@@ -15,7 +15,7 @@
             Name
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.LastName)
+            @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
         </dd>
     </dl>
     <dl class="row">
@@ -47,45 +47,45 @@
     <dl class="row">
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Service.DayOfService)
+            @Html.DisplayNameFor(model => model.Account.Service.DayOfService)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Service.DayOfService)
+            @Html.DisplayFor(model => model.Account.Service.DayOfService)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Service.NextServiceDay)
+            @Html.DisplayNameFor(model => model.Account.Service.NextServiceDay)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Service.NextServiceDay)
+            @Html.DisplayFor(model => model.Account.Service.NextServiceDay)
         </dd>
-        @if (Model.Service.IsOnHold)
+        @if (Model.Account.Service.IsOnHold)
         {
             <dd class="col-sm-10">
                 Your services are on hold
             </dd>
         }
-        @if (Model.Service.OneTimeService != null)
+        @if (Model.Account.Service.OneTimeService != null)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Service.OneTimeService)
+                @Html.DisplayNameFor(model => model.Account.Service.OneTimeService)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Service.OneTimeService)
+                @Html.DisplayFor(model => model.Account.Service.OneTimeService)
             </dd>
         }
-        @if (Model.Service.StartServiceHold != null && Model.Service.EndServiceHold != null)
+        @if (Model.Account.Service.StartServiceHold != null && Model.Account.Service.EndServiceHold != null)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Service.StartServiceHold)
+                @Html.DisplayNameFor(model => model.Account.Service.StartServiceHold)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Service.StartServiceHold)
+                @Html.DisplayFor(model => model.Account.Service.StartServiceHold)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Service.EndServiceHold)
+                @Html.DisplayNameFor(model => model.Account.Service.EndServiceHold)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Service.EndServiceHold)
+                @Html.DisplayFor(model => model.Account.Service.EndServiceHold)
             </dd>
         }
     </dl>
