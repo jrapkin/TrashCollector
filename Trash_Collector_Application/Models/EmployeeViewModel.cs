@@ -11,6 +11,6 @@ namespace Trash_Collector_Application.Models
 		public Employee Employee { get; set; }
 		public List <Customer> Customers { get; set; }
 		
-		public DateTime? DayForFilter { get; set; }
+		public DayOfWeek? DayForFilter { get; set; }
 	}
 }

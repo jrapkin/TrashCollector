@@ -68,7 +68,7 @@ namespace Trash_Collector_Application.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfService = table.Column<DateTime>(nullable: false),
+                    DayOfService = table.Column<int>(nullable: false),
                     NextServiceDay = table.Column<DateTime>(nullable: false),
                     IsOnHold = table.Column<bool>(nullable: false),
                     ServiceIsCompleted = table.Column<bool>(nullable: false),
@@ -267,12 +267,12 @@ namespace Trash_Collector_Application.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a7b90f9c-0fac-47ec-b120-b551ecaf776a", "b4d3f394-a476-4b58-b262-c1babebd81d3", "Customer", "CUSTOMER" });
+                values: new object[] { "cadde80a-dc0f-44ff-8cad-341e29973374", "a40921a5-ae12-40c2-8678-098ffbbd707e", "Customer", "CUSTOMER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0f6e4b5f-4024-4660-8b8d-024700aee3bc", "38309c04-4d5f-4bff-b3b9-75e08fc0c109", "Employee", "EMPLOYEE" });
+                values: new object[] { "11d215c8-6597-490d-b9f4-2647668c0c39", "15d15f4d-deea-4b01-ade0-f039761d62e7", "Employee", "EMPLOYEE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ServiceId",

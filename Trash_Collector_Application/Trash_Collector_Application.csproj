@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20200320215731_Initial.Designer.cs" />
     <Compile Remove="Migrations\20200320222234_remov-migration.cs" />
     <Compile Remove="Migrations\20200320222234_remov-migration.Designer.cs" />
+    <Compile Remove="Migrations\20200325142502_ChangedParamaterValueTypes.cs" />
+    <Compile Remove="Migrations\20200325142502_ChangedParamaterValueTypes.Designer.cs" />
   </ItemGroup>
 
 

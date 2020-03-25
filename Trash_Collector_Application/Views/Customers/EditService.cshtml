@@ -14,14 +14,9 @@
         <form asp-action="EditService">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="DayOfService" class="control-label"></label>
-                <input asp-for="DayOfService" class="form-control" />
-                <span asp-validation-for="DayOfService" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <input type ="hidden" asp-for="IsOnHold" /> 
-            </div>
+            <input type="hidden" asp-for="DayOfService" />
+                <input type="hidden" asp-for="IsOnHold" />
+
             <div class="form-group">
                 <label asp-for="OneTimeService" class="control-label"></label>
                 <input asp-for="OneTimeService" class="form-control" />

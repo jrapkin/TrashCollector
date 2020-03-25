@@ -48,15 +48,15 @@ namespace Trash_Collector_Application.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a7b90f9c-0fac-47ec-b120-b551ecaf776a",
-                            ConcurrencyStamp = "b4d3f394-a476-4b58-b262-c1babebd81d3",
+                            Id = "cadde80a-dc0f-44ff-8cad-341e29973374",
+                            ConcurrencyStamp = "a40921a5-ae12-40c2-8678-098ffbbd707e",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "0f6e4b5f-4024-4660-8b8d-024700aee3bc",
-                            ConcurrencyStamp = "38309c04-4d5f-4bff-b3b9-75e08fc0c109",
+                            Id = "11d215c8-6597-490d-b9f4-2647668c0c39",
+                            ConcurrencyStamp = "15d15f4d-deea-4b01-ade0-f039761d62e7",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -341,8 +341,8 @@ namespace Trash_Collector_Application.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DayOfService")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("DayOfService")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndServiceHold")
                         .HasColumnType("datetime2");

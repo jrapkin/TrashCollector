@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trash_Collector_Application.Data;
 using Trash_Collector_Application.Models;
-using Xceed.Wpf.Toolkit;
 
 namespace Trash_Collector_Application.Controllers
 {
@@ -75,9 +74,12 @@ namespace Trash_Collector_Application.Controllers
             {
                 customerAccount.Service.NextServiceDay = customerAccount.Service.NextServiceDay.AddDays(7);
             }
-            if (customerAccount.Service.OneTimeService.Value.Date.Equals(DateTime.Today.Date))
+            if(customerAccount.Service.OneTimeService.HasValue)
             {
-                customerAccount.Service.OneTimeService = null;
+                if (customerAccount.Service.OneTimeService.Equals(DateTime.Today.Date))
+                {
+                    customerAccount.Service.OneTimeService = null;
+                }
             }
             customerAccount.Service.ServiceIsCompleted = true;
             customerAccount.AccountBalance += 50;
@@ -124,89 +126,10 @@ namespace Trash_Collector_Application.Controllers
             }
         }
 
-        // GET: Employees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult CustomerDetails(int Id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
-            return View(employee);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,IdtentityUserId")] Employee employee)
-        {
-            if (id != employee.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
-            return View(employee);
-        }
-
-        // GET: Employees/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees
-                .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
-        }
-
-        // POST: Employees/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Id == id);
+            var customer = _context.Customers.Include(a =>a.Address).Where(c => c.Id ==Id).FirstOrDefault();
+            return View(customer);
         }
 
         private List<Customer> GetAllCustomers()
@@ -230,13 +153,6 @@ namespace Trash_Collector_Application.Controllers
                 customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(employeeView.DayForFilter) || sd.Account.Service.OneTimeService.Equals(employeeView.DayForFilter)).ToList();
             }
             return customers;
-        }
-        private void CreateDateTimePicker()
-        {
-            DateTimePicker dateTimePicker = new DateTimePicker();
-            dateTimePicker.Minimum = new DateTime(2020, 3, 1);
-           
-            
         }
     }
 }

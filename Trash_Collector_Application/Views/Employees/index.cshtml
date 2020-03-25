@@ -9,22 +9,16 @@
 <hr />
 <h2>Today's Pickups @Model.Employee.ZipCode</h2>
 <div class="row">
-    <fieldset style="width:300px">
-        <legend>Filter By Day</legend>
-
-        Day: <asp:DropDownList ID="ddlDay" runat="server">
-        </asp:DropDownList>
-    </fieldset>
     <form asp-action="Index">
         <div class="form-group">
             <label asp-for="DayForFilter" class="control-label">Filter By Day</label>
-            <select asp-for="DayForFilter" value="DayForFilter.DayOfWeek" class="form-control">
-                <option value=@DateTime .>Monday</option>
-                <option value=@Model.DayForFilter>Tuesday</option>
-                <option value=@Model.DayForFilter>Wednesday</option>
-                <option value=@Model.DayForFilter>Thursday</option>
-                <option value=@Model.DayForFilter>Friday</option>
-                <option value=@Model.DayForFilter>Saturday</option>
+            <select asp-for="DayForFilter" value="DayForFilter" class="form-control">
+                <option value=@DayOfWeek.Monday>Monday</option>
+                <option value=@DayOfWeek.Tuesday>Tuesday</option>
+                <option value=@DayOfWeek.Wednesday>Wednesday</option>
+                <option value=@DayOfWeek.Thursday>Thursday</option>
+                <option value=@DayOfWeek.Friday>Friday</option>
+                <option value=@DayOfWeek.Saturday>Saturday</option>
             </select>
             <span asp-validation-for="DayForFilter" class="text-danger"></span>
         </div>
@@ -33,57 +27,59 @@
         </div>
     </form>
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Customer Name
-            </th>
-            <th>
-                Customer Address
-            </th>
-            <th>
-                Service Day
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+@if (Model.Customers.Count > 0)
+{ 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Customer Name
+                </th>
+                <th>
+                    Customer Address
+                </th>
+                <th>
+                    Service Day
+                </th>
+                <th></th>
+            </tr>
+        </thead>
 
-    @if (Model.Customers.Count > 0)
+
+   @foreach (var item in Model.Customers)
     {
-        @foreach (var item in Model.Customers)
-        {
-            <tbody>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address.StreetAddress),
-                        @Html.DisplayFor(modelItem => item.Address.City),
-                        @Html.DisplayFor(modelItem => item.Address.ZipCode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Account.Service.DayOfService)
-                    </td>
-                    <td>
-                        @if (item.Account.Service.ServiceIsCompleted)
-                        {
-                            <p class="text-body">Service Complete</p>
-                        }
-                    
-                        @if (item.Account.Service.ServiceIsCompleted == false)
-                        {
-                            <a asp-action="ConfirmCompletedService" asp-route-AccountId="@item.AccountId">Confirm Service Pickup</a>
-                        }
-                        |
-                        <a asp-action="CustomerDetails" asp-route-id= "@item.Id">Customer Details</a>
-                    </td>
-                </tr>
-            </tbody>
-        }
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address.StreetAddress),
+                    @Html.DisplayFor(modelItem => item.Address.City),
+                    @Html.DisplayFor(modelItem => item.Address.ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.Service.DayOfService)
+                </td>
+                <td>
+                    @if (item.Account.Service.ServiceIsCompleted)
+                     {
+                        <p class="text-body">Service Complete</p>
+                     }
+                     @if (item.Account.Service.ServiceIsCompleted == false)
+                     {
+                        <a asp-action="ConfirmCompletedService" asp-route-AccountId="@item.AccountId">Confirm Service Pickup</a>
+                     }
+                     |
+                    <a asp-action="CustomerDetails" asp-route-id="@item.Id">Customer Details</a>
+                </td>
+            </tr>
+        </tbody>
     }
-
-
-</table>
+    </table>
+}
+else
+{
+    <p> No services to complete.</p>
+}

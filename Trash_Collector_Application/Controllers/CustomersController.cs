@@ -84,7 +84,7 @@ namespace Trash_Collector_Application.Controllers
 			{
 				try
 				{
-					service.NextServiceDay = service.DayOfService;
+					service.NextServiceDay = DateTime.Today;
 					if(service.NextServiceDay.Equals(service.DayOfService))
 					{
 						service.NextServiceDay = service.NextServiceDay.AddDays(7);
@@ -114,6 +114,7 @@ namespace Trash_Collector_Application.Controllers
 				return View();
 			}
 		}
+		//TODO: Add EditAccount
 		public IActionResult EditService()
 		{
 			var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -127,13 +128,11 @@ namespace Trash_Collector_Application.Controllers
 				return NotFound(); 
 			}
 			return View(customer.Account.Service);
-
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult EditService([Bind("Id, DayOfService, NextServiceDay, IsOnHold, OneTimeService, StartServiceHold, EndServiceHold")]Service service)
 		{
-			//var serviceToUpdate = _context.Services.Where(s => s.Id == service.Id).FirstOrDefault();//query service table 
 			if (_context.Services.Where(s => s.Id == service.Id).Any() == false)
 			{
 				return NotFound();
@@ -142,11 +141,10 @@ namespace Trash_Collector_Application.Controllers
 			{ 
 				try
 				{
-					service.NextServiceDay = service.DayOfService;
-					if (service.NextServiceDay.Equals(service.DayOfService))
+					if (service.StartServiceHold.HasValue)
 					{
-						service.NextServiceDay = service.NextServiceDay.AddDays(7);
-					}
+						service.IsOnHold = true;
+					}	
 					_context.Update(service);
 					_context.SaveChanges();
 				}

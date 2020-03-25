@@ -12,7 +12,6 @@ namespace Trash_Collector_Application.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		[Display]
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 
