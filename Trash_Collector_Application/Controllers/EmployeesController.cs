@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trash_Collector_Application.Data;
 using Trash_Collector_Application.Models;
+using Xceed.Wpf.Toolkit;
 
 namespace Trash_Collector_Application.Controllers
 {
@@ -70,11 +71,11 @@ namespace Trash_Collector_Application.Controllers
         public IActionResult ConfirmCompletedService(int accountId)
         {
             var customerAccount = _context.Accounts.Include(a => a.Service).Where(a => a.Id == accountId).FirstOrDefault();
-            if (customerAccount.Service.NextServiceDay.Date.Equals(DateTime.Today))
+            if (customerAccount.Service.NextServiceDay.Equals(DateTime.Today))
             {
                 customerAccount.Service.NextServiceDay = customerAccount.Service.NextServiceDay.AddDays(7);
             }
-            if (customerAccount.Service.OneTimeService.Value.Date.Equals(DateTime.Today))
+            if (customerAccount.Service.OneTimeService.Value.Date.Equals(DateTime.Today.Date))
             {
                 customerAccount.Service.OneTimeService = null;
             }
@@ -229,6 +230,13 @@ namespace Trash_Collector_Application.Controllers
                 customers = customers.Where(sd => sd.Account.Service.DayOfService.Equals(employeeView.DayForFilter) || sd.Account.Service.OneTimeService.Equals(employeeView.DayForFilter)).ToList();
             }
             return customers;
+        }
+        private void CreateDateTimePicker()
+        {
+            DateTimePicker dateTimePicker = new DateTimePicker();
+            dateTimePicker.Minimum = new DateTime(2020, 3, 1);
+           
+            
         }
     }
 }

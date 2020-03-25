@@ -10,8 +10,8 @@ using Trash_Collector_Application.Data;
 namespace Trash_Collector_Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200324181702_initia")]
-    partial class initia
+    [Migration("20200325123210_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,15 +50,15 @@ namespace Trash_Collector_Application.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7e1408c6-34b4-488a-aa18-2ad15e94e6f5",
-                            ConcurrencyStamp = "f371cc0b-6802-4fb7-b96e-6d3ab7e53a04",
+                            Id = "a7b90f9c-0fac-47ec-b120-b551ecaf776a",
+                            ConcurrencyStamp = "b4d3f394-a476-4b58-b262-c1babebd81d3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "dd222b73-33df-41a6-b1a2-02cfb01ca0c6",
-                            ConcurrencyStamp = "f787429d-791d-42a1-a7e8-321abf0c4923",
+                            Id = "0f6e4b5f-4024-4660-8b8d-024700aee3bc",
+                            ConcurrencyStamp = "38309c04-4d5f-4bff-b3b9-75e08fc0c109",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -343,8 +343,8 @@ namespace Trash_Collector_Application.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DayOfService")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("DayOfService")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EndServiceHold")
                         .HasColumnType("datetime2");
@@ -357,6 +357,9 @@ namespace Trash_Collector_Application.Migrations
 
                     b.Property<DateTime?>("OneTimeService")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("ServiceIsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("StartServiceHold")
                         .HasColumnType("datetime2");

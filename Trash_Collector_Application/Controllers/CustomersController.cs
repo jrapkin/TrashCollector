@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,13 +19,11 @@ namespace Trash_Collector_Application.Controllers
 		{
 			_context = context;
 		}
-
 		//GET: Customers
-
+		
 		public IActionResult Index()
 		{
 			var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//find if customer exists
 			if (_context.Customers.Where(c => c.IdentityUserId == userId).Any())
 			{
 				var currentUser = _context.Customers.Include(c => c.Address).Include(c => c.Account).ThenInclude(s => s.Service).Where(c => c.IdentityUserId == userId).FirstOrDefault();
@@ -73,7 +72,6 @@ namespace Trash_Collector_Application.Controllers
 				return View();
 			}
 		}
-		//TODO Build out createaccount post method
 		public IActionResult CreateAccount()
 		{
 			return View();
@@ -86,7 +84,11 @@ namespace Trash_Collector_Application.Controllers
 			{
 				try
 				{
-					
+					service.NextServiceDay = service.DayOfService;
+					if(service.NextServiceDay.Equals(service.DayOfService))
+					{
+						service.NextServiceDay = service.NextServiceDay.AddDays(7);
+					}
 					_context.Services.Add(service);
 					_context.SaveChanges();
 
@@ -132,20 +134,25 @@ namespace Trash_Collector_Application.Controllers
 		public IActionResult EditService([Bind("Id, DayOfService, NextServiceDay, IsOnHold, OneTimeService, StartServiceHold, EndServiceHold")]Service service)
 		{
 			//var serviceToUpdate = _context.Services.Where(s => s.Id == service.Id).FirstOrDefault();//query service table 
-			if (!_context.Services.Where(s => s.Id == service.Id).Any())
+			if (_context.Services.Where(s => s.Id == service.Id).Any() == false)
 			{
 				return NotFound();
 			}
 			if (ModelState.IsValid)
-			{
+			{ 
 				try
 				{
+					service.NextServiceDay = service.DayOfService;
+					if (service.NextServiceDay.Equals(service.DayOfService))
+					{
+						service.NextServiceDay = service.NextServiceDay.AddDays(7);
+					}
 					_context.Update(service);
 					_context.SaveChanges();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!_context.Services.Any(s => s.Id == service.Id))
+					if (_context.Services.Any(s => s.Id == service.Id) == false)
 					{
 						return NotFound();
 					}

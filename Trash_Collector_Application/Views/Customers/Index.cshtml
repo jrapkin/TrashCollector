@@ -9,8 +9,20 @@
 <h1 class="text-center">Dashboard</h1>
 <h2>Hello, @Model.FirstName </h2>
 <hr />
-<h3>Current Balance:@Model.Account.AccountBalance</h3>
+@if (Model.Account != null)
+{
+    <h3>Current Balance: @Model.Account.AccountBalance</h3>
+}
+
 <h4 style="font-size:120%"> How can we help you today?</h4>
 
-<div class="col-3 text-white"><a class="btn-primary active btn-sm btn-block" asp-action="CreateAccount">Start Service</a> </div>
+@if (Model.Account == null)
+{
+    <div class="col-3 text-white"><a class="btn-primary active btn-sm btn-block" asp-action="CreateAccount">Start Service</a> </div>
+}
 
+else
+{
+    <div class="col-3 text-white"><a class="btn-primary active btn-sm btn-block" asp-action="EditService">Edit Service</a> </div>
+}
+<div class="col-3 text-white"><a class="btn-secondary active btn-sm btn-block" asp-action="AccountDetails">View Account Details</a> </div>

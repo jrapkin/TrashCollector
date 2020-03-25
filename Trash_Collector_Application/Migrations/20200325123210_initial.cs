@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Trash_Collector_Application.Migrations
 {
-    public partial class initia : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,9 +68,10 @@ namespace Trash_Collector_Application.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfService = table.Column<int>(nullable: false),
+                    DayOfService = table.Column<DateTime>(nullable: false),
                     NextServiceDay = table.Column<DateTime>(nullable: false),
                     IsOnHold = table.Column<bool>(nullable: false),
+                    ServiceIsCompleted = table.Column<bool>(nullable: false),
                     OneTimeService = table.Column<DateTime>(nullable: true),
                     StartServiceHold = table.Column<DateTime>(nullable: true),
                     EndServiceHold = table.Column<DateTime>(nullable: true)
@@ -266,12 +267,12 @@ namespace Trash_Collector_Application.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7e1408c6-34b4-488a-aa18-2ad15e94e6f5", "f371cc0b-6802-4fb7-b96e-6d3ab7e53a04", "Customer", "CUSTOMER" });
+                values: new object[] { "a7b90f9c-0fac-47ec-b120-b551ecaf776a", "b4d3f394-a476-4b58-b262-c1babebd81d3", "Customer", "CUSTOMER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "dd222b73-33df-41a6-b1a2-02cfb01ca0c6", "f787429d-791d-42a1-a7e8-321abf0c4923", "Employee", "EMPLOYEE" });
+                values: new object[] { "0f6e4b5f-4024-4660-8b8d-024700aee3bc", "38309c04-4d5f-4bff-b3b9-75e08fc0c109", "Employee", "EMPLOYEE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ServiceId",

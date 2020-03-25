@@ -10,7 +10,7 @@ namespace Trash_Collector_Application.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		public DayOfWeek DayOfService { get; set; }
+		public DateTime DayOfService { get; set; }
 		public DateTime NextServiceDay { get; set; }
 		public bool IsOnHold { get; set; }
 		public bool ServiceIsCompleted { get; set; }
